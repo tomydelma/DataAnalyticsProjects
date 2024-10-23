@@ -8,7 +8,7 @@ setwd('C:/Users/Tomy/Desktop/Proyectos Personales/Project 5 - Health Analysis (R
 # Install & load libreries
 ################################################################################
 
-#install.packages("tidyverse") # Instalamos una librería
+#install.packages("maps") # Instalamos una librería
 library("tidyverse")          # Cargamos una librería
 library("lubridate")
 library(dplyr)
@@ -18,6 +18,9 @@ library(party)
 library(ggpubr)
 library(randomForest)
 library(corrplot)
+library(ggplot2)
+library(maps)
+
 ################################################################################
 # Data Management y Data Wrangling
 ################################################################################
@@ -113,7 +116,7 @@ top10Alc %>%
        x = "Year", y = "Average High BP")
 
 ################################################################################
-#Correlations
+#Correlations Pearson 
 ################################################################################
 
 correlation <- cor(onlycountries$High.BP, onlycountries$Vitamin..Deficiency, use = "complete.obs")
@@ -128,6 +131,9 @@ correlation_matrix <- cor(selected_columns)
 print(correlation_matrix)
 
 corrplot(correlation_matrix, method = "color", tl.col = "black", tl.srt = 45)
+
+anova_model <- aov(High.BP ~ Country, data = onlycountries)
+summary(anova_model)
 
 ################################################################################
 #LM
@@ -144,10 +150,13 @@ ggplot(onlycountries, aes(x = Excess.Sodium, y = High.BP)) +
   geom_point() +
   geom_smooth(method = "lm", formula = y ~ x, col = "red")
 
-ggplot(onlycountries, aes(x = High.Body.Mass.Index.Obesity., y = High.BP)) +
+ggplot(onlycountries, aes(x = Passive.Smoking, y = High.BP)) +
   geom_point() +
   geom_smooth(method = "lm", formula = y ~ x, col = "blue")
 
+ggplot(onlycountries, aes(x = High.LDL.Cholesterol, y = High.BP)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, col = "green")
 
-
+################################################################################
 
